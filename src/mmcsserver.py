@@ -12,6 +12,7 @@ hello_path = re.compile("^/hello$")
 register_customers_path = re.compile("^/register/customers$")
 register_customer_path = re.compile("^/register/customer$")
 
+
 class ThreadingServer(ThreadingMixIn, HTTPServer):
     pass
 
@@ -52,10 +53,9 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_response(httplib.NOT_FOUND)
 
 
-logging.basicConfig(filename='/tmp/mmcs.log',level=logging.DEBUG)
-
 config = ConfigParser.ConfigParser()
 config.read("conf/application.conf")
+logging.basicConfig(filename=config.get("logging","log-file"),level=logging.DEBUG)
 port = config.get("networking",'web-server-port')
 server_host = config.get("networking", "web-server-host")
 
