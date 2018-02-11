@@ -2,7 +2,8 @@ import logging
 import requests
 import c
 import httplib
-
+import os
+import fnmatch
 
 class CustomerOperation:
     def __init__(self, uuid):
@@ -65,8 +66,11 @@ class CustomerOperation:
 
     @staticmethod
     def get_files(customer, folder):
-        front = open(folder + "/" + customer['idNo'] + '_F.png')
-        back = open(folder + "/" + customer['idNo'] + '_B.png')
+        for file in os.listdir(folder):
+            if fnmatch.fnmatch(file, str(customer['idNo']) + '_F.*'):
+                front = open(folder + "/" + file)
+            if fnmatch.fnmatch(file, str(customer['idNo']) + '_B.*'):
+                back = open(folder + "/" + file)
         files = {
             'front': front, 'back': back
         }

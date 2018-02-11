@@ -14,10 +14,14 @@ class Download:
         os.mkdir(self.folder)
 
     @staticmethod
-    def download(form,src,dst):
+    def download(form,src,dst_folder,file_name,ext):
         if not form.has_key(src):
             logging.error("%s content is not present in the payload",src)
             return
+        if form[src].filename is not None:
+            ext = str(form[src].filename)
+            ext = ext[ext.rindex(".")+1:]
+        dst = dst_folder + "/" + file_name  + "." + ext
         dst = open(dst, "wb")
         shutil.copyfileobj(form[src].file, dst)
         dst.close()
@@ -40,8 +44,8 @@ class Download:
         return self.folder
 
     def download_from_form(self,form,folder):
-        self.download(form,"file",folder+"/temp.xlsx")
-        self.download(form,"images",folder+"/images.zip")
+        self.download(form,"file",folder,"temp","xlsx")
+        self.download(form,"images",folder,"images","zip")
 
 
 class DownloadContent(Download):
@@ -52,6 +56,6 @@ class DownloadContent(Download):
         if not id_no:
             logging.error("Payload does not contain id_no. Unable to process")
             return
-        self.download(form, "front",self.folder + "/"+str(id_no)+"_F.png")
-        self.download(form, "back",self.folder + "/"+str(id_no) + "_B.png")
+        self.download(form,"front",self.folder,str(id_no)+"_F","png")
+        self.download(form,"back",self.folder,str(id_no) + "_B","png")
         return self.folder,pay_load
