@@ -3,7 +3,6 @@ from BaseHTTPServer import HTTPServer
 import BaseHTTPServer
 import ConfigParser
 import re
-import logging
 import httplib
 from Registration import *
 from Download import *
@@ -11,6 +10,7 @@ from Download import *
 
 hello_path = re.compile("^/hello$")
 register_customers_path = re.compile("^/register/customers$")
+register_customer_path = re.compile("^/register/customer$")
 
 class ThreadingServer(ThreadingMixIn, HTTPServer):
     pass
@@ -42,17 +42,15 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def do_POST(self):
         logging.debug("Path %s", self.path)
-        if register_customers_path.match(self.path):
-            download = Download()
-            download.download_file(self.rfile,self.headers)
-            rm = XLRegistration()
-            rm.process_file()
+        if register_customer_path.match(self.path):
+            IndividualRegistration(DownloadContent().download_all_content(self.rfile, self.headers)).process()
+            self.send_data(httplib.OK, "text", "Content is Processed")
+        elif register_customers_path.match(self.path):
+            XLRegistration(Download().download_all_content(self.rfile,self.headers)).process()
             self.send_data(httplib.OK, "text", "File is Processed")
         else:
             self.send_response(httplib.NOT_FOUND)
 
-    def do_PUT(self):
-        pass
 
 logging.basicConfig(filename='/tmp/mmcs.log',level=logging.DEBUG)
 

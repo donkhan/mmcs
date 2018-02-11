@@ -2,7 +2,12 @@ import logging
 import requests
 import c
 
+
 class CustomerOperation:
+
+    def __init__(self,uuid):
+        self.folder = uuid
+
     def start_customer_on_boarding(self,headers,customer):
         self.register_customer(headers,customer,[self.update_images,self.approve_customer,
                                                  self.convert_customer])
@@ -51,8 +56,8 @@ class CustomerOperation:
         logging.debug("Converting Status Code %d", status_code)
 
     def get_files(self,customer):
-        front = open('/tmp/'+customer['idNo'] + '_F.png')
-        back = open('/tmp/' + customer['idNo'] + '_B.png')
+        front = open(self.folder + "/"+customer['idNo'] + '_F.png')
+        back = open(self.folder + "/" + customer['idNo'] + '_B.png')
         files = {
             'front': front, 'back': back
         }

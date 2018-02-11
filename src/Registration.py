@@ -2,28 +2,55 @@ import logging
 import xlrd
 import zipfile
 from CustomerOperation import *
+import json
+import shutil
+
+class IndividualRegistration:
+
+    def __init__(self,folder):
+        self.customer_operation = CustomerOperation(folder)
+        self.folder = folder
+
+    def process(self):
+        self.customer_operation.start_customer_on_boarding({},self.get_customer())
+        shutil.rmtree(self.folder)
+
+    def get_customer(self):
+        post_data = json.loads(open(self.folder + "/content.json").read())
+        return {
+            'idType': post_data.get('doc_type'), 'idNo': post_data.get('id_no'),
+            'email': post_data.get('email_id'), 'nationality': post_data.get('nationality'),
+            'mobile': post_data.get('mobile'), 'customerName': post_data.get('name'),
+            'address': post_data.get('address'), 'city': post_data.get('city'),
+            'state': post_data.get('state'), 'postalCode': post_data.get('postal_code'), 'country': post_data.get('nationality'),
+            'type': type, 'dob': post_data.get('dob'), 'idExpiryDate': '1-1-2030',
+            'registeredThrough': 'MREMIT'
+        }
+        return customer
 
 
 class XLRegistration:
-    def __init__(self):
-        self.customer_operation = CustomerOperation()
+    def __init__(self,folder):
+        self.customer_operation = CustomerOperation(folder)
+        self.folder = folder
 
     def extract_images(self):
-        zip_ref = zipfile.ZipFile("/tmp/images.zip", 'r')
-        zip_ref.extractall("/tmp")
+        zip_ref = zipfile.ZipFile(self.folder + "/images.zip", 'r')
+        zip_ref.extractall(self.folder)
         zip_ref.close()
 
-    def process_file(self):
+    def process(self):
         #headers = {"Api-key": auth.auth()}
         self.extract_images()
-        workbook = xlrd.open_workbook('/tmp/temp.xlsx')
+        workbook = xlrd.open_workbook(self.folder+'/temp.xlsx')
         sheet = workbook.sheet_by_index(0)
         row = 0
         while row < sheet.nrows:
             customer = self.get_customer(sheet,row)
             self.customer_operation.start_customer_on_boarding({},customer)
             row = row + 1
-
+        shutil.rmtree(self.folder)
+        
     def get_customer(self,sheet,row):
         doc_type = str(sheet.cell(row, 0).value)
         id_no = str(sheet.cell(row,1).value)

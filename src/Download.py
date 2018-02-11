@@ -1,7 +1,8 @@
 import shutil
 import cgi
 import logging
-
+import os
+import uuid
 
 class Download:
 
@@ -9,12 +10,14 @@ class Download:
         pass
 
     def download(self,form,src,dst):
+        if not form.has_key(src):
+            logging.error("%s content is not present in the payload",src)
+            return
         fdst = open(dst, "wb")
         shutil.copyfileobj(form[src].file, fdst)
         fdst.close()
 
-    def download_file(self,rfile,headers):
-        logging.debug("Downloading of Excel and image zip")
+    def get_form(self,rfile,headers):
         form = cgi.FieldStorage(
             fp=rfile,
             headers=headers,
@@ -22,5 +25,29 @@ class Download:
                 "REQUEST_METHOD": "POST",
                 "CONTENT_TYPE": headers['Content-Type']
             })
-        self.download(form,"file","/tmp/temp.xlsx")
-        self.download(form,"images","/tmp/images.zip")
+        return form
+
+    def get_folder(self):
+        folder = "/tmp/" + str(uuid.uuid1())
+        logging.debug("Temp folder is " + folder)
+        os.mkdir(folder)
+        return folder
+
+    def download_all_content(self,rfile,headers):
+        folder = self.get_folder()
+        logging.debug("Downloading of Excel and image zip")
+        form = self.get_form(rfile,headers)
+        self.download_from_form(form,folder)
+        return folder
+
+    def download_from_form(self,form,folder):
+        self.download(form,"file",folder+"/temp.xlsx")
+        self.download(form,"images",folder+"/images.zip")
+
+class DownloadContent(Download):
+    def download_all_content(self,rfile,headers):
+        folder = self.get_folder()
+        form = self.get_form(rfile,headers)
+        self.download_from_form(form,folder)
+        self.download(form, "data", folder + "/content.json")
+        return folder
