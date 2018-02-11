@@ -2,11 +2,14 @@ import xlrd
 import zipfile
 from CustomerOperation import *
 import shutil
+import auth
 
 
 class Registration:
+
     def __init__(self):
-        pass
+        #self.headers = {"Api-key": auth.auth()}
+        self.headers = {}
 
     def done(self):
         logging.debug("Going to delete %s",self.folder)
@@ -20,9 +23,10 @@ class IndividualRegistration(Registration):
         self.customer_operation = CustomerOperation(t[0])
         self.folder = t[0]
         self.pay_load = t[1]
+        Registration.__init__(self)
 
     def process(self):
-        self.customer_operation.start_customer_on_boarding({},self.get_customer(self.pay_load))
+        self.customer_operation.start_customer_on_boarding(self.headers,self.get_customer(self.pay_load))
         self.done()
 
     @staticmethod
@@ -44,6 +48,7 @@ class XLRegistration(Registration):
     def __init__(self,folder):
         self.customer_operation = CustomerOperation(folder)
         self.folder = folder
+        Registration.__init__(self)
 
     @staticmethod
     def extract_images(folder):
@@ -52,14 +57,13 @@ class XLRegistration(Registration):
         zip_ref.close()
 
     def process(self):
-        #headers = {"Api-key": auth.auth()}
         self.extract_images(self.folder)
         workbook = xlrd.open_workbook(self.folder+'/temp.xlsx')
         sheet = workbook.sheet_by_index(0)
         row = 1
         while row < sheet.nrows:
             customer = self.get_customer(sheet,row)
-            self.customer_operation.start_customer_on_boarding({},customer)
+            self.customer_operation.start_customer_on_boarding(self.headers,customer)
             row = row + 1
         self.done()
 
