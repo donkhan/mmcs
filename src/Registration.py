@@ -13,11 +13,11 @@ class IndividualRegistration:
         self.pay_load = t[1]
 
     def process(self):
-        self.customer_operation.start_customer_on_boarding({},self.get_customer())
+        self.customer_operation.start_customer_on_boarding({},self.get_customer(self.pay_load))
         shutil.rmtree(self.folder)
 
-    def get_customer(self):
-        post_data = self.pay_load
+    @staticmethod
+    def get_customer(post_data):
         return {
             'idType': post_data.get('doc_type'), 'idNo': post_data.get('id_no'),
             'email': post_data.get('email_id'), 'nationality': post_data.get('nationality'),
@@ -31,28 +31,31 @@ class IndividualRegistration:
 
 
 class XLRegistration:
+
     def __init__(self,folder):
         self.customer_operation = CustomerOperation(folder)
         self.folder = folder
 
-    def extract_images(self):
-        zip_ref = zipfile.ZipFile(self.folder + "/images.zip", 'r')
-        zip_ref.extractall(self.folder)
+    @staticmethod
+    def extract_images(folder):
+        zip_ref = zipfile.ZipFile(folder + "/images.zip", 'r')
+        zip_ref.extractall(folder)
         zip_ref.close()
 
     def process(self):
         #headers = {"Api-key": auth.auth()}
-        self.extract_images()
+        self.extract_images(self.folder)
         workbook = xlrd.open_workbook(self.folder+'/temp.xlsx')
         sheet = workbook.sheet_by_index(0)
-        row = 0
+        row = 1
         while row < sheet.nrows:
             customer = self.get_customer(sheet,row)
             self.customer_operation.start_customer_on_boarding({},customer)
             row = row + 1
         shutil.rmtree(self.folder)
 
-    def get_customer(self,sheet,row):
+    @staticmethod
+    def get_customer(sheet,row):
         doc_type = str(sheet.cell(row, 0).value)
         id_no = str(sheet.cell(row,1).value)
         email_id = str(sheet.cell(row,2).value)

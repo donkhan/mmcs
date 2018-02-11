@@ -15,9 +15,9 @@ class Download:
         if not form.has_key(src):
             logging.error("%s content is not present in the payload",src)
             return
-        fdst = open(dst, "wb")
-        shutil.copyfileobj(form[src].file, fdst)
-        fdst.close()
+        dst = open(dst, "wb")
+        shutil.copyfileobj(form[src].file, dst)
+        dst.close()
 
     def get_form(self,rfile,headers):
         form = cgi.FieldStorage(
