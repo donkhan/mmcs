@@ -1,11 +1,20 @@
-import logging
 import xlrd
 import zipfile
 from CustomerOperation import *
 import shutil
 
 
-class IndividualRegistration:
+class Registration:
+    def __init__(self):
+        pass
+
+    def done(self):
+        logging.debug("Going to delete %s",self.folder)
+        shutil.rmtree(self.folder)
+        logging.debug("Deleted %s",self.folder)
+
+
+class IndividualRegistration(Registration):
 
     def __init__(self,t):
         self.customer_operation = CustomerOperation(t[0])
@@ -14,7 +23,7 @@ class IndividualRegistration:
 
     def process(self):
         self.customer_operation.start_customer_on_boarding({},self.get_customer(self.pay_load))
-        shutil.rmtree(self.folder)
+        self.done()
 
     @staticmethod
     def get_customer(post_data):
@@ -30,7 +39,7 @@ class IndividualRegistration:
         return customer
 
 
-class XLRegistration:
+class XLRegistration(Registration):
 
     def __init__(self,folder):
         self.customer_operation = CustomerOperation(folder)
@@ -52,7 +61,7 @@ class XLRegistration:
             customer = self.get_customer(sheet,row)
             self.customer_operation.start_customer_on_boarding({},customer)
             row = row + 1
-        shutil.rmtree(self.folder)
+        self.done()
 
     @staticmethod
     def get_customer(sheet,row):
