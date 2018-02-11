@@ -2,21 +2,22 @@ import logging
 import xlrd
 import zipfile
 from CustomerOperation import *
-import json
 import shutil
+
 
 class IndividualRegistration:
 
-    def __init__(self,folder):
-        self.customer_operation = CustomerOperation(folder)
-        self.folder = folder
+    def __init__(self,t):
+        self.customer_operation = CustomerOperation(t[0])
+        self.folder = t[0]
+        self.pay_load = t[1]
 
     def process(self):
         self.customer_operation.start_customer_on_boarding({},self.get_customer())
         shutil.rmtree(self.folder)
 
     def get_customer(self):
-        post_data = json.loads(open(self.folder + "/content.json").read())
+        post_data = self.pay_load
         return {
             'idType': post_data.get('doc_type'), 'idNo': post_data.get('id_no'),
             'email': post_data.get('email_id'), 'nationality': post_data.get('nationality'),
@@ -50,7 +51,7 @@ class XLRegistration:
             self.customer_operation.start_customer_on_boarding({},customer)
             row = row + 1
         shutil.rmtree(self.folder)
-        
+
     def get_customer(self,sheet,row):
         doc_type = str(sheet.cell(row, 0).value)
         id_no = str(sheet.cell(row,1).value)

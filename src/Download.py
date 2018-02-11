@@ -3,6 +3,8 @@ import cgi
 import logging
 import os
 import uuid
+import json
+
 
 class Download:
 
@@ -44,10 +46,16 @@ class Download:
         self.download(form,"file",folder+"/temp.xlsx")
         self.download(form,"images",folder+"/images.zip")
 
+
 class DownloadContent(Download):
     def download_all_content(self,rfile,headers):
         folder = self.get_folder()
         form = self.get_form(rfile,headers)
-        self.download_from_form(form,folder)
-        self.download(form, "data", folder + "/content.json")
-        return folder
+        pay_load = json.loads(form.getvalue("data"))
+        id_no = pay_load.get("id_no")
+        if not id_no:
+            logging.error("Payload does not contain id_no. Unable to process")
+            return
+        self.download(form, "front",folder + "/"+str(id_no)+"_F.png")
+        self.download(form, "back",folder + "/"+str(id_no) + "_B.png")
+        return folder,pay_load

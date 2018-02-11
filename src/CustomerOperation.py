@@ -9,8 +9,11 @@ class CustomerOperation:
         self.folder = uuid
 
     def start_customer_on_boarding(self,headers,customer):
-        self.register_customer(headers,customer,[self.update_images,self.approve_customer,
+        self.start_chaining(headers,customer,[self.register_customer,self.update_images,self.approve_customer,
                                                  self.convert_customer])
+
+    def start_chaining(self, headers, customer, next_functions):
+        next_functions[0](headers,customer,next_functions[1:])
 
     def register_customer(self,headers,customer,next_functions):
         logging.debug("Registering Customer %s ", customer.get('customerName'))
