@@ -14,7 +14,7 @@ class Download:
         os.mkdir(self.folder)
 
     @staticmethod
-    def download(form,src,dst_folder,file_name,ext):
+    def download(form,src,dst_folder,file_name,ext="ukn"):
         if not form.has_key(src):
             logging.error("%s content is not present in the payload",src)
             return
@@ -25,6 +25,7 @@ class Download:
         dst = open(dst, "wb")
         shutil.copyfileobj(form[src].file, dst)
         dst.close()
+        return dst.name
 
     @staticmethod
     def get_form(r_file,headers):
@@ -38,13 +39,13 @@ class Download:
         return form
 
     def download_all_content(self,r_file,headers):
-        logging.debug("Downloading of Excel and image zip")
+        logging.debug("Downloading of Excel/CSV and image zip")
         form = self.get_form(r_file,headers)
         self.download_from_form(form,self.folder)
-        return self.folder
+        return (self.folder, self.file_name)
 
     def download_from_form(self,form,folder):
-        self.download(form,"file",folder,"temp","xlsx")
+        self.file_name = self.download(form,"file",folder,"temp")
         self.download(form,"images",folder,"images","zip")
 
 

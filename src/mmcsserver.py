@@ -3,9 +3,8 @@ from BaseHTTPServer import HTTPServer
 import BaseHTTPServer
 import ConfigParser
 import re
-import httplib
-from Registration import *
 from Download import *
+from CSVRegistration import  *
 
 
 hello_path = re.compile("^/hello$")
@@ -44,10 +43,12 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_POST(self):
         logging.debug("Path %s", self.path)
         if register_customer_path.match(self.path):
-            IndividualRegistration(DownloadContent().download_all_content(self.rfile, self.headers)).process()
+            DownloadContent().download_all_content(self.rfile, self.headers)
             self.send_data(httplib.OK, "text", "Content is Processed")
         elif register_customers_path.match(self.path):
-            XLRegistration(Download().download_all_content(self.rfile,self.headers)).process()
+            download = Download().download_all_content(self.rfile, self.headers)
+            if download[1].endswith("csv"):
+                CSVRegistration(download[0]).process()
             self.send_data(httplib.OK, "text", "File is Processed")
         else:
             self.send_response(httplib.NOT_FOUND)

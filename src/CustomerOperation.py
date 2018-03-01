@@ -5,7 +5,9 @@ import httplib
 import os
 import fnmatch
 
+
 class CustomerOperation:
+    
     def __init__(self, uuid):
         self.folder = uuid
 
@@ -66,12 +68,7 @@ class CustomerOperation:
 
     @staticmethod
     def get_files(customer, folder):
-        for file in os.listdir(folder):
-            if fnmatch.fnmatch(file, str(customer['idNo']) + '_F.*'):
-                front = open(folder + "/" + file)
-            if fnmatch.fnmatch(file, str(customer['idNo']) + '_B.*'):
-                back = open(folder + "/" + file)
         files = {
-            'front': front, 'back': back
+            'front': open(folder + "/" + customer['front_file']), 'back': open(folder + "/" + customer['back_file'])
         }
         return files
