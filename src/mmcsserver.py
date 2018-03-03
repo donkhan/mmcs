@@ -44,13 +44,23 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_POST(self):
         logging.debug("Path %s", self.path)
         if register_customer_path.match(self.path):
-            IndividualRegistration(DownloadContent().download_all_content(self.rfile, self.headers)).process()
-            self.send_data(httplib.OK, "text", "Content is Processed\n")
+            boarding_status = IndividualRegistration(DownloadContent().download_all_content(self.rfile, self.headers)).process()
+            if boarding_status[0][1] == httplib.OK:
+                self.send_data(httplib.OK, "text", "Customer "+ boarding_status[1]+" Registered Successfully\n")
+            else:
+                self.send_data(boarding_status[0][1],"text","Customer "+ boarding_status[1]
+                               + " Failed at " + boarding_status[0][0] + "\n")
         elif register_customers_path.match(self.path):
             download = Download().download_all_content(self.rfile, self.headers)
             if download[1].endswith("csv"):
-                CSVRegistration(download[0]).process()
-                self.send_data(httplib.OK, "text", "CSV File is Processed\n")
+                boarding_statuses = CSVRegistration(download[0]).process()
+                text = "CSV File is Processed\n"
+                for boarding_status in boarding_statuses:
+                    if boarding_status[0][1] == httplib.OK:
+                        text = text + "Customer " + boarding_status[1] + " Registed Successfully \n"
+                    else:
+                        text = text + "Customer " + boarding_status[1] + " Failed at " + boarding_status[0][0] + "\n"
+                self.send_data(httplib.OK, "text", text)
             else:
                 XLRegistration.process()
                 self.send_data(httplib.OK, "text", "XL File is Processed\n")

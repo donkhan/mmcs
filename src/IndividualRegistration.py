@@ -11,8 +11,10 @@ class IndividualRegistration(Registration):
         Registration.__init__(self)
 
     def process(self):
-        self.customer_operation.start_customer_on_boarding(self.headers,self.get_customer(self.pay_load))
+        customer = self.get_customer(self.pay_load)
+        on_boarding_status = self.customer_operation.start_customer_on_boarding(self.headers,customer)
         self.done()
+        return on_boarding_status, self.pay_load.get('name')
 
     @staticmethod
     def get_customer(post_data):
