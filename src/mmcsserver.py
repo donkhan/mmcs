@@ -3,7 +3,7 @@ from BaseHTTPServer import HTTPServer
 import BaseHTTPServer
 import ConfigParser
 import re
-from Download import *
+from DownloadContent import *
 from CSVRegistration import *
 from XLRegistration import *
 from IndividualRegistration import *
