@@ -25,7 +25,7 @@ class CSVRegistration(BulkRegistration):
         if email_id == 'NULL':
             email_id = record[3].split()[0] + "-" + record[5] + "@maxmoney.com"
         nationality = record[1]
-        mobile = record[2]
+        mobile = '+' + record[2]
         name = record[3]
         doc_type = record[4]
         id_no = record[5]
