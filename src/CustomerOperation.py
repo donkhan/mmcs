@@ -12,56 +12,44 @@ class CustomerOperation:
         self.folder = folder
 
     def start_customer_on_boarding(self, headers, customer):
-        create_customer_status_code = self.register_customer(self,headers, customer)
-        if create_customer_status_code == httplib.OK:
-            update_images_status_code = self.update_images(self,headers,customer,self.get_files(customer,self.folder))
-            if update_images_status_code == httplib.OK:
-                approve_customer_status_code = self.approve_customer(self,headers,customer)
-                if approve_customer_status_code == httplib.OK:
-                    convert_customer_status_code = self.convert_customer(self,headers,customer)
-                    if convert_customer_status_code == httplib.OK:
-                        return "Success",200
-                    else:
-                        return "Convert Customer", convert_customer_status_code
-                return "Approve Customer", approve_customer_status_code
-            else:
-                return "Update Images", update_images_status_code
-        else:
-            return "Create Customer", create_customer_status_code
-
-
+        fns = [self.register_customer,self.update_images,self.approve_customer,self.convert_customer]
+        operation_names = ['Create Customer','Upload Images',"Approve Customer","Conversion of Customer"]
+        files = self.get_files(customer,self.folder)
+        for t in zip(fns,operation_names):
+            response = t[0](self,headers,customer,files)
+            if response.status_code != httplib.OK:
+                return customer.get('customerName'),response.content, response.status_code,t[1]
+        return customer.get('fullName')," registered successfully", httplib.OK
 
     @staticmethod
-    def register_customer(self, headers, customer):
+    def register_customer(self, headers, customer,files):
         logging.debug("Registering Customer %s ", customer.get('customerName'))
-        return requests.post(c.site + "/customers", verify=False, headers=headers, data=customer).status_code
+        return requests.post(c.site + "/customers", verify=False, headers=headers, data=customer)
 
 
     @staticmethod
     def update_images(self, headers, customer, files):
         logging.debug("Updating images of " + customer.get('customerName'))
         return requests.put(c.site + "/customers/" + customer['idNo'], verify=False,
-                                            headers=headers, data=customer, files=files).status_code
+                                            headers=headers, data=customer, files=files)
 
     @staticmethod
-    def approve_customer(self, headers, customer):
+    def approve_customer(self, headers, customer,files):
         logging.debug("Approve " + customer.get('customerName'))
         return requests.post(c.site + "/customers/" + customer['idNo'] + "/approve", verify=False, headers=headers,
-                                 data={}).status_code
+                                 data={})
 
     @staticmethod
-    def validate_customer(self, headers, customer):
+    def validate_customer(self, headers, customer,files):
         logging.debug("Validating Customer %s", customer.get('customerName'))
         return requests.put(c.site + "/customers/" + customer['idNo'] + "/validate", verify=False, headers=headers,
-                                data={}).status_code
-
+                                data={})
 
     @staticmethod
-    def convert_customer(self, headers, customer):
+    def convert_customer(self, headers, customer,files):
         logging.debug("Converting Customer %s", customer.get('customerName'))
-        response = requests.post(c.site + "/customers/" + customer['idNo'] + "/convert-by-agent", verify=False,
+        return requests.post(c.site + "/customers/" + customer['idNo'] + "/convert-by-agent", verify=False,
                                  headers=headers, data={})
-        return response.status_code
 
     @staticmethod
     def get_files(customer, folder):

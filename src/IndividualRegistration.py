@@ -14,7 +14,7 @@ class IndividualRegistration(Registration):
         customer = self.get_customer(self.pay_load)
         on_boarding_status = self.customer_operation.start_customer_on_boarding(self.headers,customer)
         self.done()
-        return on_boarding_status, self.pay_load.get('name')
+        return on_boarding_status
 
     @staticmethod
     def get_customer(post_data):
