@@ -1,14 +1,14 @@
-import CustomerOperation
-import Registration
+from CustomerOperation import *
+from Registration import *
 
 
-class IndividualRegistration():
+class IndividualRegistration(Registration):
 
     def __init__(self,t):
         self.customer_operation = CustomerOperation(t[0])
         self.folder = t[0]
         self.pay_load = t[1]
-        #Registration.__init__(self)
+        Registration.__init__(self)
 
     def process(self):
         self.customer_operation.start_customer_on_boarding(self.headers,self.get_customer(self.pay_load))
@@ -16,6 +16,8 @@ class IndividualRegistration():
 
     @staticmethod
     def get_customer(post_data):
+        front = str(post_data.get('id_no'))+"_F.png"
+        back = str(post_data.get('id_no'))+"_B.png"
         return {
             'idType': post_data.get('doc_type'), 'idNo': post_data.get('id_no'),
             'email': post_data.get('email_id'), 'nationality': post_data.get('nationality'),
@@ -23,6 +25,6 @@ class IndividualRegistration():
             'address': post_data.get('address'), 'city': post_data.get('city'),
             'state': post_data.get('state'), 'postalCode': post_data.get('postal_code'), 'country': post_data.get('nationality'),
             'type': type, 'dob': post_data.get('dob'), 'idExpiryDate': '1-1-2030',
-            'registeredThrough': 'MREMIT'
+            'registeredThrough': 'MREMIT', 'front_file' : front, 'back_file' : back
         }
         return customer

@@ -4,8 +4,9 @@ import BaseHTTPServer
 import ConfigParser
 import re
 from Download import *
-from CSVRegistration import  *
-
+from CSVRegistration import *
+from XLRegistration import *
+from IndividualRegistration import *
 
 hello_path = re.compile("^/hello$")
 register_customers_path = re.compile("^/register/customers$")
@@ -43,13 +44,16 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_POST(self):
         logging.debug("Path %s", self.path)
         if register_customer_path.match(self.path):
-            DownloadContent().download_all_content(self.rfile, self.headers)
-            self.send_data(httplib.OK, "text", "Content is Processed")
+            IndividualRegistration(DownloadContent().download_all_content(self.rfile, self.headers)).process()
+            self.send_data(httplib.OK, "text", "Content is Processed\n")
         elif register_customers_path.match(self.path):
             download = Download().download_all_content(self.rfile, self.headers)
             if download[1].endswith("csv"):
                 CSVRegistration(download[0]).process()
-            self.send_data(httplib.OK, "text", "File is Processed")
+                self.send_data(httplib.OK, "text", "CSV File is Processed\n")
+            else:
+                XLRegistration.process()
+                self.send_data(httplib.OK, "text", "XL File is Processed\n")
         else:
             self.send_response(httplib.NOT_FOUND)
 

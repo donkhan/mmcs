@@ -8,8 +8,8 @@ import fnmatch
 
 class CustomerOperation:
     
-    def __init__(self, uuid):
-        self.folder = uuid
+    def __init__(self, folder):
+        self.folder = folder
 
     def start_customer_on_boarding(self, headers, customer):
         self.start_chaining(self, headers, customer, self.get_files(customer, self.folder),
