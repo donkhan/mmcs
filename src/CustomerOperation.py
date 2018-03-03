@@ -24,7 +24,8 @@ class CustomerOperation:
             response = t[0](self,headers,customer,files)
             if response.status_code != httplib.OK:
                 res['status_code'] = response.status_code
-                res['status_text'] = response.content
+                res['status_text'] = json.loads(response.content)
+                #print json.loads(response.content)
                 res['step'] = t[1]
                 return res
 
