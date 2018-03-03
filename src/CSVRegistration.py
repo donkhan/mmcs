@@ -13,8 +13,7 @@ class CSVRegistration(BulkRegistration):
         s = fd.readline()
         boarding_statuses = []
         while s != "":
-            customer = self.get_customer(s)
-            boarding_statuses.append(self.customer_operation.start_customer_on_boarding(self.headers,customer))
+            boarding_statuses.append(self.customer_operation.start_customer_on_boarding(self.headers,self.get_customer(s)))
             s = fd.readline()
         self.done()
         return boarding_statuses

@@ -13,11 +13,12 @@ class XLRegistration(BulkRegistration):
         workbook = xlrd.open_workbook(self.folder+'/temp.xlsx')
         sheet = workbook.sheet_by_index(0)
         row = 1
+        boarding_statuses = []
         while row < sheet.nrows:
-            customer = self.get_customer(sheet,row)
-            self.customer_operation.start_customer_on_boarding(self.headers,customer)
+            boarding_statuses.append(self.customer_operation.start_customer_on_boarding(self.headers,self.get_customer(sheet,row)))
             row = row + 1
         self.done()
+        return boarding_statuses
 
     @staticmethod
     def get_customer(sheet,row):

@@ -2,8 +2,7 @@ import logging
 import requests
 import c
 import httplib
-import os
-import fnmatch
+import json
 
 
 class CustomerOperation:
@@ -15,11 +14,21 @@ class CustomerOperation:
         fns = [self.register_customer,self.update_images,self.approve_customer,self.convert_customer]
         operation_names = ['Create Customer','Upload Images',"Approve Customer","Conversion of Customer"]
         files = self.get_files(customer,self.folder)
+        res = {
+            'name' : customer.get('fullName'),
+            'status_code' : httplib.OK,
+            'status_text' : " registered successfully ",
+            'step' : ' All Steps Done '
+        }
         for t in zip(fns,operation_names):
             response = t[0](self,headers,customer,files)
             if response.status_code != httplib.OK:
-                return customer.get('customerName'),response.content, response.status_code,t[1]
-        return customer.get('fullName')," registered successfully", httplib.OK
+                res['status_code'] = response.status_code
+                res['status_text'] = response.content
+                res['step'] = t[1]
+                return res
+
+        return res
 
     @staticmethod
     def register_customer(self, headers, customer,files):
