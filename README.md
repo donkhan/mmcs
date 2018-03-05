@@ -2,6 +2,8 @@ MaxMoney Customer Onboarding Service.
 
 Python Project. Packages Installed: xlrd
 
+pip install xlrd
+
 Registration of Customers through excel file: 
 curl -i -X POST -H "Content-Type: multipart/form-data" -F "file=@/tmp/T.xlsx" -F "images=@/Users/kkhan/Downloads/images.zip" http://127.0.0.1:6667/register/customers
 
