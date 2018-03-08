@@ -34,6 +34,7 @@ class CustomerOperation:
     @staticmethod
     def register_customer(self, headers, customer,files):
         logging.debug("Registering Customer %s ", customer.get('customerName'))
+        print customer
         return requests.post(c.site + "/customers", verify=False, headers=headers, data=customer)
 
 
