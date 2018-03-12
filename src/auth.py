@@ -2,8 +2,8 @@ import requests
 import c
 
 
-def auth():
-    (u,p) = (c.web_server_user,c.web_server_password)
+def auth(user_name,pass_word):
+    (u,p) = (user_name,pass_word)
     r = requests.post(c.site + "/sessions/current", data=c.credentials, verify=False, auth=(u,p))
     if r.status_code == 200:
         return r.json().get('session')
@@ -11,4 +11,3 @@ def auth():
         return auth()
     print r.status_code
     print r.content
-    raise 'Auth Failure'

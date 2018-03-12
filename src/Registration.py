@@ -10,7 +10,7 @@ class Registration:
         config.read("conf/application.conf")
         user_name = config.get("credentials",'web-server-user')
         pass_word = config.get("credentials","web-server-password")
-        self.headers = {"Api-key": auth.auth(user_name,pass_word)}
+        #self.headers = {"Api-key": auth.auth(user_name,pass_word)}
         self.headers = {}
 
     def done(self):
