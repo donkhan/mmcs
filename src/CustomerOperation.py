@@ -22,10 +22,11 @@ class CustomerOperation:
         }
         for t in zip(fns,operation_names):
             response = t[0](self,headers,customer,files)
-            if response.status_code != httplib.OK:
+            status_code = response.status_code
+            print t[0], response.status_code
+
+            if status_code < 200 or status_code > 299:
                 res['status_code'] = response.status_code
-                res['status_text'] = json.loads(response.content)
-                #print json.loads(response.content)
                 res['step'] = t[1]
                 return res
 
