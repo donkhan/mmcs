@@ -45,7 +45,7 @@ class CSVRegistration(BulkRegistration):
         dob = "1-1-2000"
         front = front + ".jpg"
         back = back + ".jpg"
-        return {
+        customer = {
             'idType': doc_type, 'idNo': id_no,
             'email': email_id, 'nationality': nationality,
             'mobile': mobile, 'customerName': name,
@@ -54,4 +54,5 @@ class CSVRegistration(BulkRegistration):
             'type': type, 'dob': dob, 'idExpiryDate': '1-1-2030',
             'registeredThrough': 'MREMIT', 'front_file' : 'image/'+front, 'back_file': 'image/'+back
         }
-
+        print customer
+        return customer
