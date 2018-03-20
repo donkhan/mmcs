@@ -9,10 +9,8 @@ class Registration:
     def __init__(self):
         config = ConfigParser.ConfigParser()
         config.read("conf/application.conf")
-        user_name = config.get("credentials",'web-server-user')
-        pass_word = config.get("credentials","web-server-password")
         site = config.get("credentials","site")
-        self.headers = {"Api-key": auth.auth(site,user_name,pass_word)}
+        self.headers = {"Api-key": config.get('credentials','api-key')}
         #self.headers = {}
 
     def done(self):
