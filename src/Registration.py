@@ -1,5 +1,4 @@
 import shutil
-import auth
 import logging
 import ConfigParser
 

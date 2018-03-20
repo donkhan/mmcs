@@ -52,7 +52,7 @@ class CSVRegistration(BulkRegistration):
             'address': address, 'city': city,
             'state': state, 'postalCode': postal_code, 'country': country,
             'type': type, 'dob': dob, 'idExpiryDate': '1-1-2030',
-            'registeredThrough': 'MREMIT', 'front_file' : 'image/'+front, 'back_file': 'image/'+back
+            'registeredThrough': 'agent', 'front_file' : 'image/'+front, 'back_file': 'image/'+back
         }
         print customer
         return customer
