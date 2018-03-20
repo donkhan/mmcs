@@ -37,13 +37,12 @@ class CSVRegistration(BulkRegistration):
         type = record[11]
         if doc_type == 'National IC':
             doc_type = "NRIC"
-        front = record[12].replace("\r\n","")
-        if len(record)  > 13:
-            back = record[13].replace("\r\n","")
+        country = record[12]
+        front = record[13].replace("\r\n","")
+        if len(record)  > 14:
+            back = record[14].replace("\r\n","")
         else:
             back = front
-        country = record[14]
-        #dob = "1-1-2000"
         front = front + ".jpg"
         back = back + ".jpg"
         customer = {
@@ -51,7 +50,7 @@ class CSVRegistration(BulkRegistration):
             'email': email_id, 'nationality': nationality,
             'mobile': mobile, 'customerName': name,
             'address': address, 'city': city,
-            'state': state, 'postalCode': postal_code, 'country': nationality,
+            'state': state, 'postalCode': postal_code, 'country': country,
             'type': type, 'dob': dob, 'idExpiryDate': '1-1-2030',
             'registeredThrough': 'MREMIT', 'front_file' : 'image/'+front, 'back_file': 'image/'+back
         }
