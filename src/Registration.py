@@ -3,6 +3,7 @@ import auth
 import logging
 import ConfigParser
 
+
 class Registration:
 
     def __init__(self):
@@ -10,8 +11,9 @@ class Registration:
         config.read("conf/application.conf")
         user_name = config.get("credentials",'web-server-user')
         pass_word = config.get("credentials","web-server-password")
-        #self.headers = {"Api-key": auth.auth(user_name,pass_word)}
-        self.headers = {}
+        site = config.get("credentials","site")
+        self.headers = {"Api-key": auth.auth(site,user_name,pass_word)}
+        #self.headers = {}
 
     def done(self):
         logging.debug("Going to delete %s",self.folder)
