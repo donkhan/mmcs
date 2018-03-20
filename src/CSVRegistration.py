@@ -42,7 +42,8 @@ class CSVRegistration(BulkRegistration):
             back = record[13].replace("\r\n","")
         else:
             back = front
-        dob = "1-1-2000"
+        country = record[14]
+        #dob = "1-1-2000"
         front = front + ".jpg"
         back = back + ".jpg"
         customer = {
