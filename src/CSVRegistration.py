@@ -30,6 +30,7 @@ class CSVRegistration(BulkRegistration):
         doc_type = record[4]
         id_no = record[5]
         dob = record[6]
+        #dob = '1-1-1990'
         address = record[7]
         city = record[8]
         state = record[9]
@@ -39,7 +40,7 @@ class CSVRegistration(BulkRegistration):
             doc_type = "NRIC"
         country = record[12]
         front = record[13].replace("\r\n","")
-        if len(record)  > 14:
+        if len(record) > 14:
             back = record[14].replace("\r\n","")
         else:
             back = front
@@ -51,8 +52,7 @@ class CSVRegistration(BulkRegistration):
             'mobile': mobile, 'customerName': name,
             'address': address, 'city': city,
             'state': state, 'postalCode': postal_code, 'country': country,
-            'type': type, 'dob': dob, 'idExpiryDate': '1-1-2030',
+            'type': type, 'dob': dob, 'idExpiryDate': '1-1-3030','status' : 'UnApproved',
             'registeredThrough': 'agent', 'front' : 'image/'+front, 'back': 'image/'+back
         }
-        print customer
         return customer
