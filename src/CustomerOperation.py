@@ -28,7 +28,6 @@ class CustomerOperation:
             response = t[0](self,headers,customer,files)
             status_code = response.status_code
             print t[0], response.status_code
-
             if status_code < 200 or status_code > 299:
                 res['status_code'] = response.status_code
                 res['step'] = t[1]
@@ -38,8 +37,6 @@ class CustomerOperation:
 
     @staticmethod
     def validate_customer(self,headers,customer,files):
-        print 'Validate Customer called'
-        print customer
         logging.debug("Validating Customer %s ", customer.get('customerName'))
         post_data = {
             'url' : self.url,
@@ -82,7 +79,6 @@ class CustomerOperation:
 
     @staticmethod
     def get_files(customer, folder):
-        print "Front File " + str(folder + "/" + customer['front'])
         files = {
             'front': open(folder + "/" + customer['front']), 'back': open(folder + "/" + customer['back'])
         }
