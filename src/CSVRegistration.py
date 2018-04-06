@@ -46,6 +46,8 @@ class CSVRegistration(BulkRegistration):
             back = front
         front = front + ".jpg"
         back = back + ".jpg"
+        print "Front File " + front
+        print "Back File " + back
         customer = {
             'idType': doc_type, 'idNo': id_no,
             'email': email_id, 'nationality': nationality,
