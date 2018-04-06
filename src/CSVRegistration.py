@@ -59,4 +59,5 @@ class CSVRegistration(BulkRegistration):
             'type': type, 'dob': dob, 'idExpiryDate': '1-1-3030','status' : 'UnApproved',
             'registeredThrough': 'agent', 'front' : 'image/'+front, 'back': 'image/'+back
         }
+        print customer
         return customer
