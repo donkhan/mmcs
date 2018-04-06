@@ -44,6 +44,8 @@ class CSVRegistration(BulkRegistration):
             back = record[14].replace("\r\n","")
         else:
             back = front
+        front = front.replace("\n","")
+        back = back.replace("\n","")
         front = front + ".jpg"
         back = back + ".jpg"
         print "Front File " + front
