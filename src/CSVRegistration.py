@@ -18,8 +18,7 @@ class CSVRegistration(BulkRegistration):
         self.done()
         return boarding_statuses
 
-    @staticmethod
-    def get_customer(line):
+    def get_customer(self,line):
         record = line.split(",")
         email_id = record[0]
         if email_id == 'NULL':
@@ -46,8 +45,7 @@ class CSVRegistration(BulkRegistration):
             back = front
         front = front.replace("\n","")
         back = back.replace("\n","")
-        front = front + ".jpg"
-        back = back + ".jpg"
+        (front,back) = self.get_file(front,back,self.folder)
         print "Front File " + front
         print "Back File " + back
         customer = {
@@ -61,3 +59,5 @@ class CSVRegistration(BulkRegistration):
         }
         print customer
         return customer
+
+
