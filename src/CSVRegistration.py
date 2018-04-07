@@ -12,7 +12,7 @@ class CSVRegistration(BulkRegistration):
         fd.readline()
         s = fd.readline()
         boarding_statuses = []
-        while s != "":
+        while s != "" and s != '\n':
             boarding_statuses.append(self.customer_operation.start_customer_on_boarding(self.headers,self.get_customer(s)))
             s = fd.readline()
         self.done()
@@ -29,7 +29,6 @@ class CSVRegistration(BulkRegistration):
         doc_type = record[4]
         id_no = record[5]
         dob = record[6]
-        #dob = '1-1-1990'
         address = record[7]
         city = record[8]
         state = record[9]
