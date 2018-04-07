@@ -19,7 +19,9 @@ class BulkRegistration(Registration):
 
     @staticmethod
     def get_file(front,back,folder):
+        print "Folder " + folder
         files = os.listdir(folder)
+        print " Files " + files
         new_front = ''
         new_back = ''
         for file in files:
