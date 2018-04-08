@@ -53,7 +53,7 @@ class CSVRegistration(BulkRegistration):
             'mobile': mobile, 'customerName': name,
             'address': address, 'city': city,
             'state': state, 'postalCode': postal_code, 'country': country,
-            'type': type, 'dob': dob, 'idExpiryDate': '1-1-3030','status' : 'UnApproved',
+            'type': type, 'dob': dob, 'idExpiryDate': '1-1-3030','status' : 'Unapproved',
             'registeredThrough': 'agent', 'front' : 'image/'+front, 'back': 'image/'+back
         }
         print customer
