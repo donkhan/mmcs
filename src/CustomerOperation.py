@@ -20,7 +20,7 @@ class CustomerOperation:
         res = {
             'name': customer.get('fullName'),
             'status_code': httplib.OK,
-            'status_text': " registered successfully ",
+            'status_text': " Registered Successfully ",
             'step': ' All Steps Done '
         }
         for t in zip(fns,operation_names):
@@ -30,6 +30,7 @@ class CustomerOperation:
             print t[0], response.status_code
             if status_code < 200 or status_code > 299:
                 res['status_code'] = response.status_code
+		res['status_text'] = response.status_text
                 res['step'] = t[1]
                 return res
 
@@ -55,7 +56,7 @@ class CustomerOperation:
     def update_images(self, headers, customer, files):
         logging.debug("Updating images of " + customer.get('customerName'))
         return requests.put(self.site + "/customers/" + customer['idNo'], verify=False,
-                                            headers=headers, data={'status' : 'Unapproved'}, files=files)
+                                            headers=headers, data={}, files=files)
 
     @staticmethod
     def approve_customer(self, headers, customer,files):
