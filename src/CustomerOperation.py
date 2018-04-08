@@ -30,7 +30,7 @@ class CustomerOperation:
             print t[0], response.status_code
             if status_code < 200 or status_code > 299:
                 res['status_code'] = response.status_code
-		        res['status_text'] = "Error in execution"
+		res['status_text'] = "Error in execution"
                 res['step'] = t[1]
                 return res
 
