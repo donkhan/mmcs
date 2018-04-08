@@ -24,14 +24,13 @@ class CustomerOperation:
             'step': ' All Steps Done '
         }
         for t in zip(fns,operation_names):
-            print t[1]
             response = t[0](self,headers,customer,files)
             status_code = response.status_code
             print t[0], response.status_code
             if status_code < 200 or status_code > 299:
                 res['status_code'] = response.status_code
-		res['status_text'] = "Error in execution"
                 res['step'] = t[1]
+                res['status_text'] = 'Error in execution'
                 return res
 
         return res
