@@ -55,7 +55,7 @@ class CustomerOperation:
     def update_images(self, headers, customer, files):
         logging.debug("Updating images of " + customer.get('customerName'))
         return requests.put(self.site + "/customers/" + customer['idNo'], verify=False,
-                                            headers=headers, data={}, files=files)
+                                            headers=headers, data={'status' : 'Unapproved'}, files=files)
 
     @staticmethod
     def approve_customer(self, headers, customer,files):
