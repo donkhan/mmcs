@@ -45,8 +45,6 @@ class CSVRegistration(BulkRegistration):
         front = front.replace("\n","")
         back = back.replace("\n","")
         (front,back) = self.get_file(front,back,self.folder)
-        print "Front File " + front
-        print "Back File " + back
         customer = {
             'idType': doc_type, 'idNo': id_no,
             'email': email_id, 'nationality': nationality,
