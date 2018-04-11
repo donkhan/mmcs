@@ -86,7 +86,7 @@ class CustomerOperation:
         print folder
         print customer['front']
         files = {
-            'front': open(folder + "/" + customer['front'])
+            'front': open(folder + "/" + customer['front']),
             'back': open(folder + "/" + customer['back'])
 
         }
