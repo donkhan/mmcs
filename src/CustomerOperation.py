@@ -17,8 +17,8 @@ class CustomerOperation:
     def start_customer_on_boarding(self, headers, customer):
         fns = [self.register_customer,self.update_images,self.approve_customer,self.validate_customer,self.convert_customer,self.activate_user]
         operation_names = ['Create Customer','Upload Images',"Approve Customer","Validating Customer","Convert Customer","Activate User"]
-        fns = [self.register_customer,self.update_images]
-        operation_names = ['Customer Registration','Upload Images']
+        fns = [self.register_customer,self.update_images,self.approve_customer,self.validate_customer,self.convert_customer,]
+        operation_names = ['Customer Registration','Upload Images',"Approve Customer","Validating Customer","Convert Customer"]
         files = self.get_files(customer,self.folder)
         res = {
             'name': customer.get('fullName'),
@@ -87,6 +87,7 @@ class CustomerOperation:
         print customer['front']
         files = {
             'front': open(folder + "/" + customer['front'])
+            'back': open(folder + "/" + customer['back'])
 
         }
         return files
