@@ -62,4 +62,6 @@ logging.basicConfig(filename=config.get("logging","log-file"),level=logging.DEBU
 port = config.get("networking",'web-server-port')
 server_host = config.get("networking", "web-server-host")
 
+logging.debug("Going to Start MMCS Server in Port " + port)
 ThreadingServer((server_host, int(port)), RequestHandler).serve_forever()
+logging.debug("MMCS Server Started... in Port " + port)
