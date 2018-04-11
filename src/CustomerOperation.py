@@ -81,8 +81,10 @@ class CustomerOperation:
 
     @staticmethod
     def get_files(customer, folder):
+        print folder
+        print customer['front']
         files = {
             'front': open(folder + "/" + customer['front'])
-            
+
         }
         return files
