@@ -27,6 +27,6 @@ class IndividualRegistration(Registration):
             'address': post_data.get('address'), 'city': post_data.get('city'),
             'state': post_data.get('state'), 'postalCode': post_data.get('postal_code'), 'country': post_data.get('nationality'),
             'type': type, 'dob': post_data.get('dob'), 'idExpiryDate': '1-1-2030',
-            'registeredThrough': 'MREMIT', 'front_file' : front, 'back_file' : back, type : 'Individual'
+            'registeredThrough': 'agent', 'front_file' : front, 'back_file' : back, type : 'Individual'
         }
         return customer
