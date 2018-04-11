@@ -22,7 +22,7 @@ class CustomerOperation:
         wait_times = [10,2,1,1,1]
         files = self.get_files(customer,self.folder)
         res = {
-            'name': customer.get('fullName'),
+            'name': customer.get('customerName'),
             'status_code': httplib.OK,
             'status_text': "Customer " + customer.get('fullName') +" Registered Successfully ",
             'step': ' All Steps Done '
@@ -35,7 +35,7 @@ class CustomerOperation:
             if status_code < 200 or status_code > 299:
                 res['status_code'] = response.status_code
                 res['step'] = t[1]
-                res['status_text'] = 'Error in Registering  Customer ' + customer.get('fullName')
+                res['status_text'] = 'Error in Registering  Customer ' + customer.get('customerName')
                 return res
 
         return res
