@@ -30,7 +30,7 @@ class CustomerOperation:
         for t in zip(fns,operation_names,wait_times):
             response = t[0](self,headers,customer,files)
             status_code = response.status_code
-            logging.debug("Operation Name " + t[1] + " Code = " + response.status_code)
+            logging.debug("Operation Name " + t[1] + " Code = " + str(response.status_code))
             time.sleep(t[2])
             if status_code < 200 or status_code > 299:
                 res['status_code'] = response.status_code
