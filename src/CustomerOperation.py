@@ -15,26 +15,27 @@ class CustomerOperation:
         self.url = config.get('validate','url')
 
     def start_customer_on_boarding(self, headers, customer):
-        fns = [self.register_customer,self.update_images,self.approve_customer,self.validate_customer,self.convert_customer,self.activate_user]
-        operation_names = ['Create Customer','Upload Images',"Approve Customer","Validating Customer","Convert Customer","Activate User"]
+        #fns = [self.register_customer,self.update_images,self.approve_customer,self.validate_customer,self.convert_customer,self.activate_user]
+        #operation_names = ['Create Customer','Upload Images',"Approve Customer","Validating Customer","Convert Customer","Activate User"]
         fns = [self.register_customer,self.update_images,self.approve_customer,self.validate_customer,self.convert_customer,]
         operation_names = ['Customer Registration','Upload Images',"Approve Customer","Validating Customer","Convert Customer"]
+        wait_times = [10,2,1,1,1]
         files = self.get_files(customer,self.folder)
         res = {
             'name': customer.get('fullName'),
             'status_code': httplib.OK,
-            'status_text': " Registered Successfully ",
+            'status_text': "Customer " + customer.get('fullName') +" Registered Successfully ",
             'step': ' All Steps Done '
         }
-        for t in zip(fns,operation_names):
+        for t in zip(fns,operation_names,wait_times):
             response = t[0](self,headers,customer,files)
             status_code = response.status_code
-            print t[0], response.status_code
-            time.sleep(10)
+            logging.debug("Operation Name " + t[1] + " Code = " + response.status_code)
+            time.sleep(t[2])
             if status_code < 200 or status_code > 299:
                 res['status_code'] = response.status_code
                 res['step'] = t[1]
-                res['status_text'] = 'Error in execution'
+                res['status_text'] = 'Error in Registering  Customer ' + customer.get('fullName')
                 return res
 
         return res
