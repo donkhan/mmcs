@@ -87,6 +87,5 @@ class CustomerOperation:
         files = {
             'front': open(folder + "/" + customer['front']),
             'back': open(folder + "/" + customer['back'])
-
         }
         return files
