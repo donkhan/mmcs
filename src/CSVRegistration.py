@@ -7,7 +7,6 @@ class CSVRegistration(BulkRegistration):
         BulkRegistration.__init__(self,folder)
 
     def process(self):
-        print self.folder
         self.extract_images(self.folder)
         fd = open(self.folder+'/temp.csv')
         fd.readline()
