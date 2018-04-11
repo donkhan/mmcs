@@ -24,7 +24,7 @@ class CustomerOperation:
         res = {
             'name': customer.get('customerName'),
             'status_code': httplib.OK,
-            'status_text': "Customer " + customer.get('fullName') +" Registered Successfully ",
+            'status_text': "Customer " + customer.get('customerName') +" Registered Successfully ",
             'step': ' All Steps Done '
         }
         for t in zip(fns,operation_names,wait_times):
