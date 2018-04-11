@@ -2,6 +2,7 @@ import logging
 import requests
 import httplib
 import ConfigParser
+import time
 
 
 class CustomerOperation:
@@ -29,6 +30,7 @@ class CustomerOperation:
             response = t[0](self,headers,customer,files)
             status_code = response.status_code
             print t[0], response.status_code
+            time.sleep(10)
             if status_code < 200 or status_code > 299:
                 res['status_code'] = response.status_code
                 res['step'] = t[1]
