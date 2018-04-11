@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [ $# == 0 ];
+then
+    echo "Usage mmts start/stop/status/restart"
+    exit
+fi
+
+
+start(){
+    echo "Going to start mmcs server"
+    nohup python src/mmcsserver.py &> /var/log/mmcswebserver.log &
+    echo "MMCS Server Started. Check logs in /var/log/mmcs.log"
+}
+
+stop(){
+    echo "Finding Pid..."
+    lines=`ps -aux | grep mmcsserver |  awk '{print $2}'`
+    echo "Going to kill the process"
+    kill -9 $lines 2> /dev/null
+    echo "MMCS Server Stopped"
+}
+
+
+
+if [ $1 == 'restart' ];
+then
+    stop
+    start
+fi
+
+if [ $1 = 'start' ];
+then
+    start
+fi
+
+if [ $1 = 'stop' ];
+then
+    stop
+fi
+
+
+
+
+
+
+
+
+
