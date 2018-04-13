@@ -28,7 +28,7 @@ class CSVRegistration(BulkRegistration):
         name = record[3]
         doc_type = record[4]
         id_no = record[5]
-        dob = record[6]
+        dob = dob_adjust(record[6])
         address = record[7]
         city = record[8]
         state = record[9]
@@ -57,3 +57,9 @@ class CSVRegistration(BulkRegistration):
         return customer
 
 
+def dob_adjust(dob):
+    tokens = dob.split("-")
+    if(len(tokens[2]) == 4):
+        return  dob
+    else:
+        return tokens[0] + "-" + tokens[1] + "-" + "19" + tokens[2]
