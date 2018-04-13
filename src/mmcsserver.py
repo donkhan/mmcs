@@ -1,7 +1,6 @@
 from SocketServer import ThreadingMixIn
 from BaseHTTPServer import HTTPServer
 import BaseHTTPServer
-import ConfigParser
 import re
 from DownloadContent import *
 from CSVRegistration import *
